@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fuentesFoto">
+    <item>Galería</item>
+    <item>Cámara</item>
+    </string-array>
+
+    <string-array name="fuentesFoto_values">
+    <item>Galeria</item>
+    <item>Camara</item>
+    </string-array>
+</resources>

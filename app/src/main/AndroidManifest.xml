@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NuevoActivity"></activity>
+        <activity android:name=".NuevoActivity" />
+        <activity android:name=".Preferencias"></activity>
     </application>
 
 </manifest>

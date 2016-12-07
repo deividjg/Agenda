@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="foto"
+        android:title="Fuente de las fotografías"
+        android:summary="Seleccionar el origen de las fotografías"
+        android:entries="@array/fuentesFoto"
+        android:entryValues="@array/fuentesFoto_values"/>
+</PreferenceScreen>
