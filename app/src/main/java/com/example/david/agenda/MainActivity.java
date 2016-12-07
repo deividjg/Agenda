@@ -1,9 +1,10 @@
 package com.example.david.agenda;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,13 +13,18 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import static android.R.attr.path;
 
 public class MainActivity extends AppCompatActivity {
 
     static Adaptador a;
     static ArrayList<Contacto> arrayList = new ArrayList();
     ListView lv;
+    private static File path;
+    private static Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +34,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         lv = (ListView)findViewById(R.id.listView);
-        Contacto cont1 = new Contacto(1, "Nombre1", "direc1", "webblog1", "telefono1", "rutafoto1");
-        Contacto cont2 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "rutafoto2");
+        Contacto cont1 = new Contacto(1, "Nombre1", "direc1", "webblog1", "telefono1", "foto1");
+        Contacto cont2 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto2");
+        Contacto cont3 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto3");
+        Contacto cont4 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto4");
+        Contacto cont5 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto5");
+        Contacto cont6 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto6");
         arrayList.add(cont1);
         arrayList.add(cont2);
+        arrayList.add(cont3);
+        arrayList.add(cont4);
+        arrayList.add(cont5);
+        arrayList.add(cont6);
+        arrayList.add(cont1);
+        arrayList.add(cont2);
+        arrayList.add(cont3);
+        arrayList.add(cont4);
+        arrayList.add(cont5);
+        arrayList.add(cont6);
         a = new Adaptador(this,arrayList);
         a.notifyDataSetChanged();
         lv.setAdapter(a);

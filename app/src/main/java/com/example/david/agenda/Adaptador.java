@@ -2,6 +2,7 @@ package com.example.david.agenda;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +50,8 @@ public class Adaptador extends BaseAdapter {
         TextView tvNombre = (TextView) view.findViewById(R.id.tvNombre);
         tvNombre.setText((CharSequence) lista.get(position).getNombre());
         TextView tvTelefono = (TextView) view.findViewById(R.id.tvTelefono);
-        tvTelefono.setText("" + lista.get(position).getTelefono());
-        File imgFile = new File(lista.get(position).getrFoto());
+        tvTelefono.setText(lista.get(position).getTelefono());
+        File imgFile = new File(Environment.getExternalStorageDirectory() + "/" + lista.get(position).getrFoto() + ".jpg");
         if (imgFile.exists()) {
             ImageView im = (ImageView) view.findViewById(R.id.ivFoto);
             im.setImageBitmap(BitmapFactory.decodeFile(imgFile.getAbsolutePath()));
