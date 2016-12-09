@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView adapter, View view, int position, long arg) {
                 Contacto contacto = (Contacto) lv.getAdapter().getItem(position);
-                Intent intent = new Intent (getApplicationContext(), NuevoActivity.class);
+                Intent intent = new Intent (getApplicationContext(), EditarActivity.class);
                 intent.putExtra("idContacto", contacto.getId());
                 startActivity(intent);
             }
