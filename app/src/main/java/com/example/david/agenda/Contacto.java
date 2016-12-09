@@ -10,12 +10,13 @@ public class Contacto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private long id;
-    private String nombre, direccion, webBlog, telefono,rFoto;
+    private String nombre, direccion, eMail, webBlog, telefono,rFoto;
 
-    public Contacto(long id, String nombre, String direccion, String webBlog, String telefono, String rFoto){
+    public Contacto(long id, String nombre, String direccion, String eMail, String webBlog, String telefono, String rFoto){
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
+        this.eMail = eMail;
         this.webBlog = webBlog;
         this.telefono = telefono;
         this.rFoto = rFoto;

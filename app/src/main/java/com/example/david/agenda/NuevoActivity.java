@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,10 +35,11 @@ public class NuevoActivity extends AppCompatActivity {
     private static Bitmap bm;
     private static ImageView iv;
     private static String fuente;
-    private static EditText etNombre;
+    private static EditText etNombre, etTelefono, etDireccion, etEmail, etWebBlog, etFoto;
     private static OutputStream os;
     private static File path;
     private static File fich_salida;
+    private static boolean fotoTomada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +49,27 @@ public class NuevoActivity extends AppCompatActivity {
         idNuevoContacto = bd.nuevaID();
 
         iv = (ImageView)findViewById(R.id.imageView);
-        iv.setImageDrawable(null);
-        etNombre = (EditText)findViewById(R.id.editText);
+        etNombre = (EditText)findViewById(R.id.etNombre);
+        etTelefono = (EditText)findViewById(R.id.etTelefono);
+        etDireccion = (EditText)findViewById(R.id.etDireccion);
+        etEmail = (EditText)findViewById(R.id.etEmail);
+        etWebBlog = (EditText)findViewById(R.id.etWebBlog);
+        etFoto = (EditText)findViewById(R.id.etFoto);
+
+        fotoTomada = false;
 
         SharedPreferences prefs = getSharedPreferences("com.example.david.agenda_preferences",MODE_PRIVATE);
         fuente = prefs.getString("foto","galeria");
+
+        preparaDirectorio();
     }
 
-    protected void guardar(View v){
+    protected void alta(View v){
         if(iv.getDrawable() == null) {
             Toast.makeText(getApplicationContext(),"Ninguna foto que guardar", Toast.LENGTH_LONG).show();
         } else {
-            path = getExternalFilesDir(DIRECTORY_PICTURES);
-            fich_salida= new File(path, bd.nuevoNombreFoto());
+            path = Environment.getExternalStorageDirectory();
+            fich_salida= new File(path.getAbsolutePath() + "/Fotos_Contactos", bd.nuevoNombreFoto());
             try {
                 os = new FileOutputStream(fich_salida);
             } catch (FileNotFoundException e) {}
@@ -72,8 +82,19 @@ public class NuevoActivity extends AppCompatActivity {
             } catch (IOException e) {}
         }
 
-        bd.insertarContacto(idNuevoContacto, "David", "610049154", "Granada", "www.web.com", path.getAbsolutePath() + "/" + bd.nuevoNombreFoto());
-        Toast.makeText(getApplicationContext(),"Contacto guardado", Toast.LENGTH_LONG).show();
+        String nombre = etNombre.getText().toString();
+        String telefono = etTelefono.getText().toString();
+        String direccion = etDireccion.getText().toString();
+        String eMail = etEmail.getText().toString();
+        String webBlog = etWebBlog.getText().toString();
+
+        if(nombre.equals("")){
+            Toast.makeText(getApplicationContext(),"Debe asignar un nombre al contacto", Toast.LENGTH_LONG).show();
+        }else{
+            bd.insertarContacto(idNuevoContacto, nombre, telefono, direccion, eMail, webBlog, bd.nuevoNombreFoto());
+            Toast.makeText(getApplicationContext(),"Contacto guardado", Toast.LENGTH_LONG).show();
+            volver();
+        }
     }
 
     protected void añadirFoto(View v){
@@ -96,12 +117,24 @@ public class NuevoActivity extends AppCompatActivity {
                 bis = new BufferedInputStream(is);
                 bm = BitmapFactory.decodeStream(bis);
                 iv.setImageBitmap(bm);
+                etFoto.setText(bd.nuevoNombreFoto());
             } catch (FileNotFoundException e) {}
         }
         if (requestCode == ACT_CAMARA && resultCode == RESULT_OK) {
             bm = (Bitmap) data.getExtras().get("data");
             iv.setImageBitmap(bm);
+            etFoto.setText(bd.nuevoNombreFoto());
         }
     }
 
+    protected void volver(){
+        Intent intent = new Intent (this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    protected void preparaDirectorio(){
+        File directorioFotos = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Fotos_Contactos");
+        if(!directorioFotos.exists())
+            directorioFotos.mkdir();
+    }
 }

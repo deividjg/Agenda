@@ -1,7 +1,6 @@
 package com.example.david.agenda;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,8 +16,7 @@ public class MainActivity extends AppCompatActivity {
     static Adaptador a;
     static ArrayList<Contacto> arrayList = new ArrayList();
     ListView lv;
-    private static File path;
-    private static Bitmap bm;
+    BDContactos bd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +24,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        bd = new BDContactos(getApplicationContext());
 
         lv = (ListView)findViewById(android.R.id.list);
-        Contacto cont1 = new Contacto(1, "Nombre1", "direc1", "webblog1", "telefono1", "foto1");
-        Contacto cont2 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto2");
-        Contacto cont3 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto3");
-        Contacto cont4 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto4");
-        Contacto cont5 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto5");
-        Contacto cont6 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto6");
-        arrayList.add(cont1);
-        arrayList.add(cont2);
-        arrayList.add(cont3);
 
+        arrayList = bd.consultarContactos();
         a = new Adaptador(this,arrayList);
         a.notifyDataSetChanged();
         lv.setAdapter(a);
@@ -81,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
         a.notifyDataSetChanged();
         lv.setAdapter(a);
     }
+
 }

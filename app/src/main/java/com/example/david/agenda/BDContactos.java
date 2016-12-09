@@ -7,16 +7,17 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by David on 02/12/2016.
  */
 
 public class BDContactos extends SQLiteOpenHelper {
 
-    private static String url;
     private static final int VERSION_BASEDATOS = 1;
     private static final String NOMBRE_BASEDATOS = "Contactos.db";
-    private static final String ins = "CREATE TABLE CONTACTOS (idContacto INTEGER PRIMARY KEY, Nombre VARCHAR(50), Direccion VARCHAR(50), WebBlog VARCHAR(100))";
+    private static final String ins = "CREATE TABLE CONTACTOS (idContacto INTEGER PRIMARY KEY, Nombre VARCHAR(50), Direccion VARCHAR(50), Email VARCHAR(50), WebBlog VARCHAR(100))";
     private static final String ins2 = "CREATE TABLE TELEFONOS (idTelefono INTEGER PRIMARY KEY AUTOINCREMENT, Telefono VARCHAR(45), Contactos_idContacto INTEGER)";
     private static final String ins3 = "CREATE TABLE FOTOS (idFoto INTEGER PRIMARY KEY AUTOINCREMENT, NomFichero VARCHAR(50), ObservFoto VARCHAR(255), Contactos_IdContacto INTEGER)";
 
@@ -39,7 +40,7 @@ public class BDContactos extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String webBlog, String rFoto){
+    public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String eMail, String webBlog, String rFoto){
         long nreg_afectados = -1;
         System.out.println(idContacto);
 
@@ -50,6 +51,7 @@ public class BDContactos extends SQLiteOpenHelper {
             valores.put("idContacto", idContacto);
             valores.put("Nombre", nombre);
             valores.put("Direccion", direccion);
+            valores.put("eMail", eMail);
             valores.put("WebBlog", webBlog);
             nreg_afectados = db.insert("CONTACTOS", null, valores);
             valores = null;
@@ -86,7 +88,7 @@ public class BDContactos extends SQLiteOpenHelper {
             db.close();
             return "foto_" + nuevoNumeroFoto + ".jpg";
         }
-        return "error al asignar nombre";
+        return "Error al asignar nombre";
     }
 
     public long nuevaID(){
@@ -107,42 +109,68 @@ public class BDContactos extends SQLiteOpenHelper {
         return -1;
     }
 
-    public String[] consultarContactos(){
+    public ArrayList<Contacto> consultarContactos(){
         SQLiteDatabase db = getReadableDatabase();
-        String[] historial = new String[0];
+        ArrayList<Contacto> contactos = new ArrayList();
+        Contacto contacto;
+        long idContacto;
+        String nombre, direccion, eMail, webBlog, telefono, rFoto;
 
         if (db != null) {
-            String[] campos = {"url"};
-            Cursor c = db.query("URLs", campos, null, null, null, null, null, null);
-            historial = new String[c.getCount()];
+            String[] campos = {"idContacto", "Nombre", "Direccion", "Email", "WebBlog"};
+            Cursor c = db.query("CONTACTOS", campos, null, null, null, null, null, null);
             c.moveToFirst();
             for(int i=0; i<c.getCount(); i++){
-                historial[i] = c.getString(0);
+                idContacto = c.getLong(0);
+                nombre = c.getString(1);
+                direccion = c.getString(2);
+                eMail = c.getString(3);
+                webBlog = c.getString(4);
+                telefono = consultarTelefonos(idContacto)[0];
+                rFoto = consultarFotos(idContacto)[0];
+                contacto = new Contacto(idContacto, nombre, direccion, eMail, webBlog, telefono, rFoto);
+                contactos.add(contacto);
                 c.moveToNext();
             }
             c.close();
         }
         db.close();
-        return historial;
+        return contactos;
     }
 
-    public boolean compruebaContacto(String url){
+    public String[] consultarTelefonos(long idContacto){
         SQLiteDatabase db = getReadableDatabase();
-
+        String[] telefonos = new String[0];
         if (db != null) {
-            String[] campos = {"url"};
-            Cursor c = db.query("URLs", campos, "url='" + url + "'", null, null, null, null, null);
-            if(c.moveToFirst()){
-                c.close();
-                db.close();
-                return true;
-            }else {
-                c.close();
-                db.close();
-                return false;
+            String[] campos = {"Telefono"};
+            Cursor c = db.query("TELEFONOS", campos, "Contactos_idContacto=" + idContacto , null, null, null, null);
+            telefonos = new String[c.getCount()];
+            c.moveToFirst();
+            for(int i=0; i<c.getCount(); i++){
+                telefonos[i] = c.getString(0);
+                c.moveToNext();
             }
+            c.close();
         }
         db.close();
-        return false;
+        return telefonos;
+    }
+
+    public String[] consultarFotos(long idContacto){
+        SQLiteDatabase db = getReadableDatabase();
+        String[] fotos = new String[0];
+        if (db != null) {
+            String[] campos = {"NomFichero"};
+            Cursor c = db.query("FOTOS", campos, "Contactos_idContacto=" + idContacto , null, null, null, null);
+            fotos = new String[c.getCount()];
+            c.moveToFirst();
+            for(int i=0; i<c.getCount(); i++){
+                fotos[i] = c.getString(0);
+                c.moveToNext();
+            }
+            c.close();
+        }
+        db.close();
+        return fotos;
     }
 }

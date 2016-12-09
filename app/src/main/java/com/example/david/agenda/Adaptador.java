@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 /**
  * Created by david on 03/12/2016.
  */
@@ -51,9 +53,9 @@ public class Adaptador extends BaseAdapter {
         tvNombre.setText((CharSequence) lista.get(position).getNombre());
         TextView tvTelefono = (TextView) view.findViewById(R.id.tvTelefono);
         tvTelefono.setText(lista.get(position).getTelefono());
-        File imgFile = new File(Environment.getExternalStorageDirectory() + "/" + lista.get(position).getrFoto() + ".jpg");
+        File imgFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Fotos_Contactos", lista.get(position).getrFoto());
         if (imgFile.exists()) {
-            ImageView im = (ImageView) view.findViewById(R.id.ivFoto);
+            ImageView im = (ImageView) view.findViewById(R.id.iv);
             im.setImageBitmap(BitmapFactory.decodeFile(imgFile.getAbsolutePath()));
             im.setAdjustViewBounds(true);
         }

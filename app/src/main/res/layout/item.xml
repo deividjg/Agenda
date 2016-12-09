@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight" >
     <ImageView
-        android:id="@+id/ivFoto"
+        android:id="@+id/iv"
         android:layout_width="?android:attr/listPreferredItemHeight"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/ivFoto"
+        android:layout_toRightOf="@id/iv"
         android:singleLine="true"
         android:text="Nombre"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -30,5 +30,5 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="10dp"
-        android:layout_toEndOf="@+id/ivFoto" />
+        android:layout_toEndOf="@+id/iv" />
 </RelativeLayout>
