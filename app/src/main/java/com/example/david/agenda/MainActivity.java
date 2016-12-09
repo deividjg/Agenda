@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
         bd = new BDContactos(getApplicationContext());
 
         lv = (ListView)findViewById(android.R.id.list);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView adapter, View view, int position, long arg) {
+                Contacto contacto = (Contacto) lv.getAdapter().getItem(position);
+                Intent intent = new Intent (getApplicationContext(), NuevoActivity.class);
+                intent.putExtra("idContacto", contacto.getId());
+                startActivity(intent);
+            }
+        });
 
         arrayList = bd.consultarContactos();
         a = new Adaptador(this,arrayList);
@@ -71,5 +83,7 @@ public class MainActivity extends AppCompatActivity {
         a.notifyDataSetChanged();
         lv.setAdapter(a);
     }
+
+
 
 }

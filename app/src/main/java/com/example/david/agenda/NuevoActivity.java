@@ -65,7 +65,7 @@ public class NuevoActivity extends AppCompatActivity {
     }
 
     protected void alta(View v){
-        if(iv.getDrawable() == null) {
+        if(iv.getDrawable() == null || fotoTomada == false) {
             Toast.makeText(getApplicationContext(),"Ninguna foto que guardar", Toast.LENGTH_LONG).show();
         } else {
             path = Environment.getExternalStorageDirectory();
@@ -88,8 +88,8 @@ public class NuevoActivity extends AppCompatActivity {
         String eMail = etEmail.getText().toString();
         String webBlog = etWebBlog.getText().toString();
 
-        if(nombre.equals("")){
-            Toast.makeText(getApplicationContext(),"Debe asignar un nombre al contacto", Toast.LENGTH_LONG).show();
+        if(nombre.equals("") || telefono.equals("")){
+            Toast.makeText(getApplicationContext(),"Debe asignar un nombre y un teléfono al contacto", Toast.LENGTH_LONG).show();
         }else{
             bd.insertarContacto(idNuevoContacto, nombre, telefono, direccion, eMail, webBlog, bd.nuevoNombreFoto());
             Toast.makeText(getApplicationContext(),"Contacto guardado", Toast.LENGTH_LONG).show();
@@ -116,20 +116,24 @@ public class NuevoActivity extends AppCompatActivity {
                 is = getContentResolver().openInputStream(fotoGaleria);
                 bis = new BufferedInputStream(is);
                 bm = BitmapFactory.decodeStream(bis);
+                bm = bm.createScaledBitmap(bm, 130, 130, true);
                 iv.setImageBitmap(bm);
                 etFoto.setText(bd.nuevoNombreFoto());
+                fotoTomada = true;
             } catch (FileNotFoundException e) {}
         }
         if (requestCode == ACT_CAMARA && resultCode == RESULT_OK) {
             bm = (Bitmap) data.getExtras().get("data");
             iv.setImageBitmap(bm);
             etFoto.setText(bd.nuevoNombreFoto());
+            fotoTomada = true;
         }
     }
 
     protected void volver(){
         Intent intent = new Intent (this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     protected void preparaDirectorio(){
