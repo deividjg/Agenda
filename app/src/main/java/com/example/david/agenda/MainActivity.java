@@ -2,12 +2,9 @@ package com.example.david.agenda;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -15,8 +12,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import static android.R.attr.path;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        lv = (ListView)findViewById(R.id.listView);
+        lv = (ListView)findViewById(android.R.id.list);
         Contacto cont1 = new Contacto(1, "Nombre1", "direc1", "webblog1", "telefono1", "foto1");
         Contacto cont2 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto2");
         Contacto cont3 = new Contacto(2, "Nombre2", "direc2", "webblog2", "telefono2", "foto3");
@@ -43,15 +38,7 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(cont1);
         arrayList.add(cont2);
         arrayList.add(cont3);
-        arrayList.add(cont4);
-        arrayList.add(cont5);
-        arrayList.add(cont6);
-        arrayList.add(cont1);
-        arrayList.add(cont2);
-        arrayList.add(cont3);
-        arrayList.add(cont4);
-        arrayList.add(cont5);
-        arrayList.add(cont6);
+
         a = new Adaptador(this,arrayList);
         a.notifyDataSetChanged();
         lv.setAdapter(a);
@@ -74,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.nuevoContacto) {
             Intent intent = new Intent (this, NuevoActivity.class);
+            startActivity(intent);
+        }
+
+        if (id == R.id.preferencias) {
+            Intent intent = new Intent (this, Preferencias.class);
             startActivity(intent);
         }
 

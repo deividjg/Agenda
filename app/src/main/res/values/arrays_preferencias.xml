@@ -6,7 +6,7 @@
     </string-array>
 
     <string-array name="fuentesFoto_values">
-    <item>Galeria</item>
-    <item>Camara</item>
+    <item>galeria</item>
+    <item>camara</item>
     </string-array>
 </resources>

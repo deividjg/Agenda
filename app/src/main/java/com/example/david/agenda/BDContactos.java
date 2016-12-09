@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by David on 02/12/2016.
  */
 
-public class ContactosBD extends SQLiteOpenHelper {
+public class BDContactos extends SQLiteOpenHelper {
 
     private static String url;
     private static final int VERSION_BASEDATOS = 1;
@@ -20,7 +20,7 @@ public class ContactosBD extends SQLiteOpenHelper {
     private static final String ins2 = "CREATE TABLE TELEFONOS (idTelefono INTEGER PRIMARY KEY AUTOINCREMENT, Telefono VARCHAR(45), Contactos_idContacto INTEGER)";
     private static final String ins3 = "CREATE TABLE FOTOS (idFoto INTEGER PRIMARY KEY AUTOINCREMENT, NomFichero VARCHAR(50), ObservFoto VARCHAR(255), Contactos_IdContacto INTEGER)";
 
-    public ContactosBD(Context context) {
+    public BDContactos(Context context) {
         super(context, NOMBRE_BASEDATOS, null, VERSION_BASEDATOS);
     }
 
@@ -39,9 +39,8 @@ public class ContactosBD extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarContacto(String nombre, String telefono, String direccion, String webBlog, String rFoto){
+    public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String webBlog, String rFoto){
         long nreg_afectados = -1;
-        long idContacto = nuevaID();
         System.out.println(idContacto);
 
         SQLiteDatabase db = getWritableDatabase();
@@ -74,6 +73,20 @@ public class ContactosBD extends SQLiteOpenHelper {
 
     public void añadirTelefono(String idContacto){
 
+    }
+
+    public String nuevoNombreFoto(){
+        SQLiteDatabase db = getReadableDatabase();
+        long nuevoNumeroFoto;
+        if (db != null) {
+            String[] campos = {"idFoto"};
+            Cursor c = db.query("FOTOS", campos, null, null, null, null, null);
+            nuevoNumeroFoto = c.getCount() + 1;
+            c.close();
+            db.close();
+            return "foto_" + nuevoNumeroFoto + ".jpg";
+        }
+        return "error al asignar nombre";
     }
 
     public long nuevaID(){

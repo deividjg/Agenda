@@ -18,7 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:id="@+id/button"
-        android:onClick="guardar"/>
+        android:onClick="guardar" />
 
     <TextView
         android:text="Nombre"
@@ -106,7 +106,9 @@
         android:text="Añadir Foto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="añadirFoto"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/button2" />
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

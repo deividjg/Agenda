@@ -13,10 +13,20 @@
     tools:context="com.example.david.agenda.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ListView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/listView" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+        <TextView
+            android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TextView>
+    </FrameLayout>
 </RelativeLayout>
