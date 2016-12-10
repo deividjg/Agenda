@@ -46,6 +46,14 @@ public class Contacto implements Serializable {
         this.direccion = direccion;
     }
 
+    public String geteMail() {
+        return eMail;
+    }
+
+    public void seteMail(String webBlog) {
+        this.eMail = eMail;
+    }
+
     public String getWebBlog() {
         return webBlog;
     }

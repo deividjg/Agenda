@@ -124,6 +124,7 @@ public class NuevoActivity extends AppCompatActivity {
         }
         if (requestCode == ACT_CAMARA && resultCode == RESULT_OK) {
             bm = (Bitmap) data.getExtras().get("data");
+            bm = bm.createScaledBitmap(bm, 130, 130, true);
             iv.setImageBitmap(bm);
             etFoto.setText(bd.nuevoNombreFoto());
             fotoTomada = true;

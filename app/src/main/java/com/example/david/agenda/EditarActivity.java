@@ -1,6 +1,11 @@
 package com.example.david.agenda;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,9 +17,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-public class EditarActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import java.io.File;
+
+public class EditarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    long idContacto;
+    Contacto contacto;
+    BDContactos bd;
+    EditText etNombre, etTelefono, etDireccion, etEmail, etWebBlog, etFoto;
+    ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +46,20 @@ public class EditarActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        iv = (ImageView)findViewById(R.id.imageView);
+        etNombre = (EditText)findViewById(R.id.etNombre);
+        etTelefono = (EditText)findViewById(R.id.etTelefono);
+        etDireccion = (EditText)findViewById(R.id.etDireccion);
+        etEmail = (EditText)findViewById(R.id.etEmail);
+        etWebBlog = (EditText)findViewById(R.id.etWebBlog);
+        etFoto = (EditText)findViewById(R.id.etFoto);
+
+        bd = new BDContactos(this);
+        recibirDatos();
+        contacto = bd.consultaContacto(idContacto);
+        rellenaCampos();
+        rellenaImageView();
     }
 
     @Override
@@ -70,15 +99,30 @@ public class EditarActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent i;
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+        if (id == R.id.llamar) {
+            i = new Intent(Intent.ACTION_DIAL);
+            i.setData(Uri.parse("tel:" + contacto.getTelefono()));
+            startActivity(i);
+        } else if (id == R.id.enviarSms) {
+            i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("tel:" + contacto.getTelefono()));
+            i.setType("vnd.android-dir/mms-sms");
+            i.putExtra("address", contacto.getTelefono());
+            i.putExtra("sms_body", "sms text");
+            startActivity(i);
+        } else if (id == R.id.enviarEmail) {
+            i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "Asunto del Correo");
+            i.putExtra(Intent.EXTRA_TEXT, "Texto por Defecto del Correo");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[] {contacto.geteMail()});
+            startActivity(i);
+        } else if (id == R.id.visitarWebBlog) {
+            i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("http://" + contacto.getWebBlog()));
+            startActivity(i);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -88,5 +132,30 @@ public class EditarActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
+    }
+
+    protected void recibirDatos(){
+        Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            Toast.makeText(getApplicationContext(),"Error en la toma de datos", Toast.LENGTH_LONG).show();
+        } else {
+            idContacto = extras.getLong("idContacto");
+        }
+    }
+
+    protected void rellenaCampos(){
+        etNombre.setText(contacto.getNombre());
+        etTelefono.setText(contacto.getTelefono());
+        etDireccion.setText(contacto.getDireccion());
+        etEmail.setText(contacto.geteMail());
+        etWebBlog.setText(contacto.getWebBlog());
+        etFoto.setText(contacto.getrFoto());
+    }
+
+    protected void rellenaImageView(){
+        File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Fotos_Contactos", contacto.getrFoto());
+        Bitmap bm = BitmapFactory.decodeFile(path.getAbsolutePath());
+        iv.setImageBitmap(bm);
     }
 }

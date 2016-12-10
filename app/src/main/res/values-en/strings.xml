@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Contacts Book</string>
+    <string name="alta">Add</string>
+    <string name="direccion">Address</string>
+    <string name="email">e-mail</string>
+    <string name="enviar_email">Send e-mail</string>
+    <string name="enviar_sms">Send sms</string>
+    <string name="foto">Photo</string>
+    <string name="llamar">Call</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="nombre">Name</string>
+    <string name="telefono">Phone</string>
+    <string name="title_activity_editar">Edit Contact</string>
+    <string name="visitarWebBlog">Visit Web/Blog</string>
+    <string name="webBlog">Web/Blog</string>
+    <string name="action_settings">Settings</string>
+</resources>

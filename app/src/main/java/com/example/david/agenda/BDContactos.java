@@ -138,6 +138,29 @@ public class BDContactos extends SQLiteOpenHelper {
         return contactos;
     }
 
+    public Contacto consultaContacto(long idContacto){
+        SQLiteDatabase db = getReadableDatabase();
+        Contacto contacto = null;
+        String nombre, direccion, eMail, webBlog, telefono, rFoto;
+
+        if (db != null) {
+            String[] campos = {"Nombre", "Direccion", "Email", "WebBlog"};
+            Cursor c = db.query("CONTACTOS", campos, "idContacto=" + idContacto, null, null, null, null);
+            if(c.moveToFirst()){
+                nombre = c.getString(0);
+                direccion = c.getString(1);
+                eMail = c.getString(2);
+                webBlog = c.getString(3);
+                telefono = consultarTelefonos(idContacto)[0];
+                rFoto = consultarFotos(idContacto)[0];
+                contacto = new Contacto(idContacto, nombre, direccion, eMail, webBlog, telefono, rFoto);
+            }
+            c.close();
+        }
+        db.close();
+        return contacto;
+    }
+
     public String[] consultarTelefonos(long idContacto){
         SQLiteDatabase db = getReadableDatabase();
         String[] telefonos = new String[0];
