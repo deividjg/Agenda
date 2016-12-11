@@ -142,4 +142,9 @@ public class NuevoActivity extends AppCompatActivity {
         if(!directorioFotos.exists())
             directorioFotos.mkdir();
     }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 }

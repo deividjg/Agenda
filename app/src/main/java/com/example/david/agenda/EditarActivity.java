@@ -72,6 +72,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         } else {
             super.onBackPressed();
         }
+        finish();
     }
 
     @Override
@@ -187,12 +188,13 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
 
     protected void modificarContacto(View view){
         String nombre = etNombre.getText().toString();
+        String telefono = etTelefono.getText().toString();
         String direccion = etDireccion.getText().toString();
         String eMail = etEmail.getText().toString();
         String webBlog = etWebBlog.getText().toString();
 
-        if(nombre.equals("")){
-            Toast.makeText(getApplicationContext(),"No puede dejar el nombre en blanco", Toast.LENGTH_LONG).show();
+        if(nombre.equals("") || telefono.equals("")){
+            Toast.makeText(getApplicationContext(),"No puede dejar el nombre ni el teléfono en blanco", Toast.LENGTH_LONG).show();
         }else{
             bd.modificarContacto(contacto.getId(), nombre, direccion, eMail, webBlog);
             Toast.makeText(getApplicationContext(),"Contacto modificado", Toast.LENGTH_LONG).show();
@@ -204,5 +206,15 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         Intent intent = new Intent (this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    protected void gestionarTelefonos(View view){
+        Intent intent = new Intent (this, TelefonosActivity.class);
+        intent.putExtra("idContacto", idContacto);
+        startActivity(intent);
+    }
+
+    protected void gestionarFotos(View view){
+
     }
 }

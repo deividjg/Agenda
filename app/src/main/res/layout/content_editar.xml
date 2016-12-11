@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@android:drawable/ic_input_add"
                     android:id="@+id/btnAñadirTel"
-                    android:onClick="añadirFoto" />
+                    android:onClick="gestionarTelefonos" />
             </TableRow>
 
             <TableRow
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@android:drawable/ic_input_add"
                     android:id="@+id/btnAñadirFoto"
-                    android:onClick="añadirFoto"/>
+                    android:onClick="gestionarFotos"/>
             </TableRow>
 
         </TableLayout>
