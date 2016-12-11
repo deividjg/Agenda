@@ -1,5 +1,6 @@
 package com.example.david.agenda;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -157,5 +159,50 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Fotos_Contactos", contacto.getrFoto());
         Bitmap bm = BitmapFactory.decodeFile(path.getAbsolutePath());
         iv.setImageBitmap(bm);
+    }
+
+    protected void borrarContacto(View view){
+        AlertDialog.Builder alertDialogBu = new AlertDialog.Builder(this);
+        alertDialogBu.setTitle("Confirmar borrado");
+        alertDialogBu.setMessage("¿Está seguro?");
+        //alertDialogBu.setIcon();
+
+        alertDialogBu.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialogBu.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                bd.eliminarContacto(contacto.getId());
+                Toast.makeText(getApplicationContext(),"Contacto Eliminado", Toast.LENGTH_LONG).show();
+                volver();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBu.create();
+        alertDialog.show();
+    }
+
+    protected void modificarContacto(View view){
+        String nombre = etNombre.getText().toString();
+        String direccion = etDireccion.getText().toString();
+        String eMail = etEmail.getText().toString();
+        String webBlog = etWebBlog.getText().toString();
+
+        if(nombre.equals("")){
+            Toast.makeText(getApplicationContext(),"No puede dejar el nombre en blanco", Toast.LENGTH_LONG).show();
+        }else{
+            bd.modificarContacto(contacto.getId(), nombre, direccion, eMail, webBlog);
+            Toast.makeText(getApplicationContext(),"Contacto modificado", Toast.LENGTH_LONG).show();
+            volver();
+        }
+    }
+
+    protected void volver(){
+        Intent intent = new Intent (this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

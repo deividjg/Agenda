@@ -17,5 +17,6 @@
     <string name="enviar_sms">Enviar sms</string>
     <string name="enviar_email">Enviar e-mail</string>
     <string name="visitarWebBlog">Visitar Web/Blog</string>
+    <string name="modificar">Modificar</string>
 
 </resources>

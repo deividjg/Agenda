@@ -42,8 +42,6 @@ public class BDContactos extends SQLiteOpenHelper {
 
     public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String eMail, String webBlog, String rFoto){
         long nreg_afectados = -1;
-        System.out.println(idContacto);
-
         SQLiteDatabase db = getWritableDatabase();
 
         if (db != null) {
@@ -69,6 +67,35 @@ public class BDContactos extends SQLiteOpenHelper {
         return nreg_afectados;
     }
 
+    public long modificarContacto(long idContacto, String nombre, String direccion, String eMail, String webBlog){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            ContentValues valores = new ContentValues();
+            valores.put("Nombre", nombre);
+            valores.put("Direccion", direccion);
+            valores.put("eMail", eMail);
+            valores.put("WebBlog", webBlog);
+            nreg_afectados = db.update("CONTACTOS", valores, "idContacto=" + idContacto, null);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
+    public long eliminarContacto(long idContacto){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            nreg_afectados = db.delete("CONTACTOS", "idContacto=" + idContacto, null);
+            db.delete("TELEFONOS", "Contactos_idContacto=" + idContacto, null);
+            db.delete("FOTOS", "Contactos_idContacto=" + idContacto, null);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
     public void añadirFoto(String idContacto){
 
     }
@@ -79,11 +106,13 @@ public class BDContactos extends SQLiteOpenHelper {
 
     public String nuevoNombreFoto(){
         SQLiteDatabase db = getReadableDatabase();
-        long nuevoNumeroFoto;
+        long nuevoNumeroFoto = -1;
         if (db != null) {
             String[] campos = {"idFoto"};
             Cursor c = db.query("FOTOS", campos, null, null, null, null, null);
-            nuevoNumeroFoto = c.getCount() + 1;
+            if(c.moveToLast()){
+                nuevoNumeroFoto = c.getLong(0) + 1;
+            }
             c.close();
             db.close();
             return "foto_" + nuevoNumeroFoto + ".jpg";

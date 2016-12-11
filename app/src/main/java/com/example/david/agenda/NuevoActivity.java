@@ -66,7 +66,7 @@ public class NuevoActivity extends AppCompatActivity {
 
     protected void alta(View v){
         if(iv.getDrawable() == null || fotoTomada == false) {
-            Toast.makeText(getApplicationContext(),"Ninguna foto que guardar", Toast.LENGTH_LONG).show();
+
         } else {
             path = Environment.getExternalStorageDirectory();
             fich_salida= new File(path.getAbsolutePath() + "/Fotos_Contactos", bd.nuevoNombreFoto());
@@ -88,8 +88,8 @@ public class NuevoActivity extends AppCompatActivity {
         String eMail = etEmail.getText().toString();
         String webBlog = etWebBlog.getText().toString();
 
-        if(nombre.equals("") || telefono.equals("")){
-            Toast.makeText(getApplicationContext(),"Debe asignar un nombre y un teléfono al contacto", Toast.LENGTH_LONG).show();
+        if(nombre.equals("") || telefono.equals("") || fotoTomada == false){
+            Toast.makeText(getApplicationContext(),"Debe asignar un nombre, un teléfono y una foto", Toast.LENGTH_LONG).show();
         }else{
             bd.insertarContacto(idNuevoContacto, nombre, telefono, direccion, eMail, webBlog, bd.nuevoNombreFoto());
             Toast.makeText(getApplicationContext(),"Contacto guardado", Toast.LENGTH_LONG).show();
