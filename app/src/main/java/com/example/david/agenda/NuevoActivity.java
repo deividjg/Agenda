@@ -40,6 +40,7 @@ public class NuevoActivity extends AppCompatActivity {
     private static File path;
     private static File fich_salida;
     private static boolean fotoTomada;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class NuevoActivity extends AppCompatActivity {
 
         fotoTomada = false;
 
-        SharedPreferences prefs = getSharedPreferences("com.example.david.agenda_preferences",MODE_PRIVATE);
+        prefs = getSharedPreferences("com.example.david.agenda_preferences",MODE_PRIVATE);
         fuente = prefs.getString("foto","galeria");
 
         preparaDirectorio();

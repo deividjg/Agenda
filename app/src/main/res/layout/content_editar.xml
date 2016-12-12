@@ -13,18 +13,29 @@
     tools:context="com.example.david.agenda.EditarActivity"
     tools:showIn="@layout/app_bar_editar">
 
-
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            app:srcCompat="@android:drawable/sym_def_app_icon"
-            android:id="@+id/imageView"
-            android:layout_height="130dp"
-            android:layout_width="130dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                app:srcCompat="@android:drawable/sym_def_app_icon"
+                android:id="@+id/imageView"
+                android:layout_height="130dp"
+                android:layout_width="130dp" />
+
+            <Button
+                android:text="Eliminar esta foto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnEliminarFoto"
+                android:onClick="eliminarEstaFoto"/>
+        </LinearLayout>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -152,7 +163,7 @@
                     android:layout_height="wrap_content"
                     app:srcCompat="@android:drawable/ic_input_add"
                     android:id="@+id/btnAñadirFoto"
-                    android:onClick="gestionarFotos"/>
+                    android:onClick="añadirFoto"/>
             </TableRow>
 
         </TableLayout>

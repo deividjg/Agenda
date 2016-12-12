@@ -31,7 +31,6 @@
             android:label="@string/title_activity_editar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TelefonosActivity" />
-        <activity android:name=".FotosActivity"></activity>
     </application>
 
 </manifest>

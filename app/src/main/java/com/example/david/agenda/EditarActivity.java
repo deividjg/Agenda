@@ -2,13 +2,12 @@ package com.example.david.agenda;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,7 +22,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class EditarActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -32,6 +37,18 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
     BDContactos bd;
     EditText etNombre, etTelefono, etDireccion, etEmail, etWebBlog, etFoto;
     ImageView iv;
+    private int ACT_GALERIA = 0;
+    private int ACT_CAMARA = 1;
+    private Uri fotoGaleria;
+    private InputStream is;
+    private BufferedInputStream bis;
+    private Bitmap bm;
+    SharedPreferences prefs;
+    String fuente;
+    Boolean fotoTomada;
+    private static File path;
+    private static File fich_salida;
+    private static OutputStream os;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +74,18 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         etWebBlog = (EditText)findViewById(R.id.etWebBlog);
         etFoto = (EditText)findViewById(R.id.etFoto);
 
+        prefs = getSharedPreferences("com.example.david.agenda_preferences",MODE_PRIVATE);
+        fuente = prefs.getString("foto","galeria");
+
+        fotoTomada = false;
+
         bd = new BDContactos(this);
         recibirDatos();
         contacto = bd.consultaContacto(idContacto);
         rellenaCampos();
         rellenaImageView();
+        etTelefono.setEnabled(false);
+        etFoto.setEnabled(false);
     }
 
     @Override
@@ -126,10 +150,6 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
             i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse("http://" + contacto.getWebBlog()));
             startActivity(i);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,7 +186,6 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         AlertDialog.Builder alertDialogBu = new AlertDialog.Builder(this);
         alertDialogBu.setTitle("Confirmar borrado");
         alertDialogBu.setMessage("¿Está seguro?");
-        //alertDialogBu.setIcon();
 
         alertDialogBu.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -214,7 +233,89 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         startActivity(intent);
     }
 
-    protected void gestionarFotos(View view){
-
+    protected void añadirFoto(View v){
+        if(fuente.equals("galeria")){
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            startActivityForResult(intent, ACT_GALERIA);
+        }
+        if(fuente.equals("camara")){
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivityForResult(intent, ACT_CAMARA);
+        }
     }
+
+    protected void salvaFoto(){
+        if(fotoTomada){
+            path = Environment.getExternalStorageDirectory();
+            fich_salida= new File(path.getAbsolutePath() + "/Fotos_Contactos", bd.nuevoNombreFoto());
+            try {
+                os = new FileOutputStream(fich_salida);
+            } catch (FileNotFoundException e) {}
+            iv.setDrawingCacheEnabled(true);
+            bm = iv.getDrawingCache();
+            try {
+                bm.compress(Bitmap.CompressFormat.JPEG, 50, os);
+                os.flush();
+                os.close();
+            } catch (IOException e) {}
+            bd.añadirFoto(idContacto, bd.nuevoNombreFoto());
+            Toast.makeText(getApplicationContext(),"Foto añadida al contacto", Toast.LENGTH_LONG).show();
+            contacto = null;
+            contacto = bd.consultaContacto(idContacto);
+            rellenaCampos();
+            rellenaImageView();
+            fotoTomada = false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ACT_GALERIA && resultCode == RESULT_OK) {
+            fotoGaleria = data.getData();
+            try {
+                is = getContentResolver().openInputStream(fotoGaleria);
+                bis = new BufferedInputStream(is);
+                bm = BitmapFactory.decodeStream(bis);
+                bm = bm.createScaledBitmap(bm, 130, 130, true);
+                iv.setImageBitmap(bm);
+                etFoto.setText(bd.nuevoNombreFoto());
+                fotoTomada = true;
+                salvaFoto();
+            } catch (FileNotFoundException e) {}
+        }
+        if (requestCode == ACT_CAMARA && resultCode == RESULT_OK) {
+            bm = (Bitmap) data.getExtras().get("data");
+            bm = bm.createScaledBitmap(bm, 130, 130, true);
+            iv.setImageBitmap(bm);
+            etFoto.setText(bd.nuevoNombreFoto());
+            fotoTomada = true;
+            salvaFoto();
+        }
+    }
+
+    protected void eliminarEstaFoto(View view){
+        String[] fotos;
+        fotos = bd.consultarFotos(idContacto);
+        if(fotos.length == 1){
+            Toast.makeText(getApplicationContext(),"Foto única, imposible eliminar", Toast.LENGTH_LONG).show();
+        }else{
+            bd.eliminarFoto(idContacto, etFoto.getText().toString());
+            contacto = bd.consultaContacto(idContacto);
+            File imgFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Fotos_Contactos", etFoto.getText().toString());
+            imgFile.delete();
+            rellenaCampos();
+            rellenaImageView();
+            Toast.makeText(getApplicationContext(),"Foto eliminada", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onRestart () {
+        super.onRestart();
+        contacto = bd.consultaContacto(idContacto);
+        rellenaCampos();
+        rellenaImageView();
+    }
+
+
 }

@@ -40,7 +40,7 @@ public class BDContactos extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String eMail, String webBlog, String rFoto){
+    public long insertarContacto(long idContacto, String nombre, String telefono, String direccion, String eMail, String webBlog, String nomFoto){
         long nreg_afectados = -1;
         SQLiteDatabase db = getWritableDatabase();
 
@@ -52,16 +52,8 @@ public class BDContactos extends SQLiteOpenHelper {
             valores.put("eMail", eMail);
             valores.put("WebBlog", webBlog);
             nreg_afectados = db.insert("CONTACTOS", null, valores);
-            valores = null;
-            valores = new ContentValues();
-            valores.put("Telefono", telefono);
-            valores.put("Contactos_idContacto", idContacto);
-            db.insert("TELEFONOS", null, valores);
-            valores = null;
-            valores = new ContentValues();
-            valores.put("NomFichero", rFoto);
-            valores.put("Contactos_idContacto", idContacto);
-            db.insert("FOTOS", null, valores);
+            añadirTelefono(idContacto, telefono);
+            añadirFoto(idContacto, nomFoto);
         }
         db.close();
         return nreg_afectados;
@@ -96,82 +88,6 @@ public class BDContactos extends SQLiteOpenHelper {
         return nreg_afectados;
     }
 
-    public void añadirFoto(String idContacto){
-
-    }
-
-    public long añadirTelefono(long idContacto, String telefono){
-        long nreg_afectados = -1;
-        SQLiteDatabase db = getWritableDatabase();
-
-        if (db != null) {
-            ContentValues valores = new ContentValues();
-            valores.put("Contactos_idContacto", idContacto);
-            valores.put("Telefono", telefono);
-            nreg_afectados = db.insert("TELEFONOS", null, valores);
-        }
-        db.close();
-        return nreg_afectados;
-    }
-
-    public long modificarTelefono(long idContacto, String telAnt, String telNue){
-        long nreg_afectados = -1;
-        SQLiteDatabase db = getWritableDatabase();
-
-        if (db != null) {
-            ContentValues valores = new ContentValues();
-            valores.put("Telefono", telNue);
-            nreg_afectados = db.update("TELEFONOS", valores, "Contactos_idContacto=" + idContacto + " AND Telefono='" + telAnt + "'", null);
-        }
-        db.close();
-        return nreg_afectados;
-    }
-
-    public long eliminarTelefono(long idContacto, String tel){
-        long nreg_afectados = -1;
-        SQLiteDatabase db = getWritableDatabase();
-
-        if (db != null) {
-            nreg_afectados = db.delete("TELEFONOS", "Contactos_idContacto=" + idContacto + " AND Telefono='" + tel + "'", null);
-        }
-        db.close();
-        return nreg_afectados;
-    }
-
-    public String nuevoNombreFoto(){
-        SQLiteDatabase db = getReadableDatabase();
-        long nuevoNumeroFoto = 1;
-        if (db != null) {
-            String[] campos = {"idFoto"};
-            Cursor c = db.query("FOTOS", campos, null, null, null, null, null);
-            if(c.moveToLast()){
-                nuevoNumeroFoto = c.getLong(0) + 1;
-            }
-            c.close();
-            db.close();
-            return "foto_" + nuevoNumeroFoto + ".jpg";
-        }
-        return "Error al asignar nombre";
-    }
-
-    public long nuevaID(){
-        SQLiteDatabase db = getReadableDatabase();
-        long nContactos;
-        if (db != null) {
-            String[] campos = {"idContacto"};
-            Cursor c = db.query("CONTACTOS", campos, null, null, null, null, "idContacto DESC");
-            if(c.moveToFirst()){
-                nContactos = Long.parseLong(c.getString(0));
-            }else{
-                nContactos = 0;
-            }
-            c.close();
-            db.close();
-            return nContactos + 1;
-        }
-        return -1;
-    }
-
     public ArrayList<Contacto> consultarContactos(){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Contacto> contactos = new ArrayList();
@@ -181,7 +97,7 @@ public class BDContactos extends SQLiteOpenHelper {
 
         if (db != null) {
             String[] campos = {"idContacto", "Nombre", "Direccion", "Email", "WebBlog"};
-            Cursor c = db.query("CONTACTOS", campos, null, null, null, null, null, null);
+            Cursor c = db.query("CONTACTOS", campos, null, null, null, null, "Nombre ASC");
             c.moveToFirst();
             for(int i=0; i<c.getCount(); i++){
                 idContacto = c.getLong(0);
@@ -224,6 +140,62 @@ public class BDContactos extends SQLiteOpenHelper {
         return contacto;
     }
 
+    public long nuevaID(){
+        SQLiteDatabase db = getReadableDatabase();
+        long nContactos;
+        if (db != null) {
+            String[] campos = {"idContacto"};
+            Cursor c = db.query("CONTACTOS", campos, null, null, null, null, "idContacto DESC");
+            if(c.moveToFirst()){
+                nContactos = Long.parseLong(c.getString(0));
+            }else{
+                nContactos = 0;
+            }
+            c.close();
+            db.close();
+            return nContactos + 1;
+        }
+        return -1;
+    }
+
+    public long añadirTelefono(long idContacto, String telefono){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            ContentValues valores = new ContentValues();
+            valores.put("Contactos_idContacto", idContacto);
+            valores.put("Telefono", telefono);
+            nreg_afectados = db.insert("TELEFONOS", null, valores);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
+    public long modificarTelefono(long idContacto, String telAnt, String telNue){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            ContentValues valores = new ContentValues();
+            valores.put("Telefono", telNue);
+            nreg_afectados = db.update("TELEFONOS", valores, "Contactos_idContacto=" + idContacto + " AND Telefono='" + telAnt + "'", null);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
+    public long eliminarTelefono(long idContacto, String tel){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            nreg_afectados = db.delete("TELEFONOS", "Contactos_idContacto=" + idContacto + " AND Telefono='" + tel + "'", null);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
     public String[] consultarTelefonos(long idContacto){
         SQLiteDatabase db = getReadableDatabase();
         String[] telefonos = new String[0];
@@ -242,12 +214,53 @@ public class BDContactos extends SQLiteOpenHelper {
         return telefonos;
     }
 
+    public long añadirFoto(long idContacto, String nFoto){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            ContentValues valores = new ContentValues();
+            valores.put("Contactos_idContacto", idContacto);
+            valores.put("NomFichero", nFoto);
+            nreg_afectados = db.insert("FOTOS", null, valores);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
+    public long eliminarFoto(long idContacto, String nFoto){
+        long nreg_afectados = -1;
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (db != null) {
+            nreg_afectados = db.delete("FOTOS", "Contactos_idContacto=" + idContacto + " AND NomFichero='" + nFoto + "'", null);
+        }
+        db.close();
+        return nreg_afectados;
+    }
+
+    public String nuevoNombreFoto(){
+        SQLiteDatabase db = getReadableDatabase();
+        long nuevoNumeroFoto = 1;
+        if (db != null) {
+            String[] campos = {"idFoto"};
+            Cursor c = db.query("FOTOS", campos, null, null, null, null, null);
+            if(c.moveToLast()){
+                nuevoNumeroFoto = c.getLong(0) + 1;
+            }
+            c.close();
+            db.close();
+            return "foto_" + nuevoNumeroFoto + ".jpg";
+        }
+        return "Error al asignar nombre";
+    }
+
     public String[] consultarFotos(long idContacto){
         SQLiteDatabase db = getReadableDatabase();
         String[] fotos = new String[0];
         if (db != null) {
             String[] campos = {"NomFichero"};
-            Cursor c = db.query("FOTOS", campos, "Contactos_idContacto=" + idContacto , null, null, null, null);
+            Cursor c = db.query("FOTOS", campos, "Contactos_idContacto=" + idContacto , null, null, null, "NomFichero DESC");
             fotos = new String[c.getCount()];
             c.moveToFirst();
             for(int i=0; i<c.getCount(); i++){
