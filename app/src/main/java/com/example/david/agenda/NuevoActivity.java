@@ -90,10 +90,10 @@ public class NuevoActivity extends AppCompatActivity {
         String webBlog = etWebBlog.getText().toString();
 
         if(nombre.equals("") || telefono.equals("") || fotoTomada == false){
-            Toast.makeText(getApplicationContext(),"Debe asignar un nombre, un teléfono y una foto", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.camposIncompletos, Toast.LENGTH_LONG).show();
         }else{
             bd.insertarContacto(idNuevoContacto, nombre, telefono, direccion, eMail, webBlog, bd.nuevoNombreFoto());
-            Toast.makeText(getApplicationContext(),"Contacto guardado", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.contactoGuardado, Toast.LENGTH_LONG).show();
             volver();
         }
     }

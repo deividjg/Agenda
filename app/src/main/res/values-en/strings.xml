@@ -17,4 +17,23 @@
     <string name="webBlog">Web/Blog</string>
     <string name="action_settings">Settings</string>
     <string name="modificar">Modify</string>
+    <string name="listaRecargada">List Reloaded</string>
+    <string name="camposIncompletos">You must assign a name, a phone and a photo</string>
+    <string name="contactoGuardado">Contact saved</string>
+    <string name="errorTomaDatos">Error in taking data</string>
+    <string name="contactoEliminado">Contact deleted</string>
+    <string name="contactoModificado">Contact modified</string>
+    <string name="fotoAñadida">Photo added</string>
+    <string name="fotoUnica">Last photo, cannot delete</string>
+    <string name="fotoEliminada">Photo deleted</string>
+    <string name="telefonoModificado">Phone modified</string>
+    <string name="telefonoPrincipalVacio">The main phone cannot be empty</string>
+    <string name="campoVacio">The field is empty</string>
+    <string name="telefonoAñadido">Phone added</string>
+    <string name="telefonoEliminado">Phone deleted</string>
+    <string name="title_activity_nuevo">New Contact</string>
+    <string name="title_activity_preferencias">Preferences</string>
+    <string name="title_activity_telefonos">Manage Phones</string>
+    <string name="eliminarUltimaFoto">Delete last photo</string>
+    <string name="volver">Return</string>
 </resources>

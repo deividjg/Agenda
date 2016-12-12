@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onRestart () {
         super.onRestart();
-        Toast.makeText(this, "Lista recargada", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.listaRecargada, Toast.LENGTH_SHORT).show();
         arrayList = bd.consultarContactos();
         a = null;
         a = new Adaptador(this,arrayList);

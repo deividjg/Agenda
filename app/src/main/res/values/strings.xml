@@ -2,6 +2,9 @@
     <string name="app_name">Agenda</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_editar">Editar Contacto</string>
+    <string name="title_activity_nuevo">Nuevo Contacto</string>
+    <string name="title_activity_telefonos">Gestionar telefonos</string>
+    <string name="title_activity_preferencias">Preferencias</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -18,5 +21,21 @@
     <string name="enviar_email">Enviar e-mail</string>
     <string name="visitarWebBlog">Visitar Web/Blog</string>
     <string name="modificar">Modificar</string>
+    <string name="listaRecargada">Lista Recargada</string>
+    <string name="camposIncompletos">Debe asignar un nombre, un teléfono y una foto</string>
+    <string name="contactoGuardado">Contacto guardado</string>
+    <string name="errorTomaDatos">Error en la toma de datos</string>
+    <string name="contactoEliminado">Contacto eliminado</string>
+    <string name="contactoModificado">Contacto modificado</string>
+    <string name="fotoAñadida">Foto añadida al contacto</string>
+    <string name="fotoUnica">Foto única, imposible eliminar</string>
+    <string name="fotoEliminada">Foto eliminada</string>
+    <string name="telefonoModificado">Telefono modificado</string>
+    <string name="telefonoPrincipalVacio">El teléfono principal no puede quedar vacío</string>
+    <string name="campoVacio">El campo está vacío</string>
+    <string name="telefonoAñadido">Telefono añadido</string>
+    <string name="telefonoEliminado">Telefono eliminado</string>
+    <string name="eliminarUltimaFoto">Eliminar última foto</string>
+    <string name="volver">Volver</string>
 
 </resources>

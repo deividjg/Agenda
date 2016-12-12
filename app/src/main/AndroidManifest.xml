@@ -24,13 +24,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NuevoActivity" />
-        <activity android:name=".Preferencias" />
+        <activity android:name=".NuevoActivity"
+            android:label="@string/title_activity_nuevo"/>
+        <activity android:name=".Preferencias"
+            android:label="@string/title_activity_preferencias"/>
         <activity
             android:name=".EditarActivity"
             android:label="@string/title_activity_editar"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TelefonosActivity" />
+        <activity android:name=".TelefonosActivity"
+            android:label="@string/title_activity_telefonos"/>
     </application>
 
 </manifest>

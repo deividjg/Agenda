@@ -43,7 +43,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
     private InputStream is;
     private BufferedInputStream bis;
     private Bitmap bm;
-    SharedPreferences prefs;
+    private static SharedPreferences prefs;
     String fuente;
     Boolean fotoTomada;
     private static File path;
@@ -114,7 +114,8 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.volver) {
+            volver();
             return true;
         }
 
@@ -161,7 +162,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
     protected void recibirDatos(){
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            Toast.makeText(getApplicationContext(),"Error en la toma de datos", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.errorTomaDatos, Toast.LENGTH_LONG).show();
         } else {
             idContacto = extras.getLong("idContacto");
         }
@@ -196,7 +197,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         alertDialogBu.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 bd.eliminarContacto(contacto.getId());
-                Toast.makeText(getApplicationContext(),"Contacto Eliminado", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),R.string.contactoEliminado, Toast.LENGTH_LONG).show();
                 volver();
             }
         });
@@ -213,10 +214,10 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         String webBlog = etWebBlog.getText().toString();
 
         if(nombre.equals("") || telefono.equals("")){
-            Toast.makeText(getApplicationContext(),"No puede dejar el nombre ni el teléfono en blanco", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.camposIncompletos, Toast.LENGTH_LONG).show();
         }else{
             bd.modificarContacto(contacto.getId(), nombre, direccion, eMail, webBlog);
-            Toast.makeText(getApplicationContext(),"Contacto modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.contactoModificado, Toast.LENGTH_LONG).show();
             volver();
         }
     }
@@ -259,7 +260,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
                 os.close();
             } catch (IOException e) {}
             bd.añadirFoto(idContacto, bd.nuevoNombreFoto());
-            Toast.makeText(getApplicationContext(),"Foto añadida al contacto", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.fotoAñadida, Toast.LENGTH_LONG).show();
             contacto = null;
             contacto = bd.consultaContacto(idContacto);
             rellenaCampos();
@@ -297,7 +298,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
         String[] fotos;
         fotos = bd.consultarFotos(idContacto);
         if(fotos.length == 1){
-            Toast.makeText(getApplicationContext(),"Foto única, imposible eliminar", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.fotoUnica, Toast.LENGTH_LONG).show();
         }else{
             bd.eliminarFoto(idContacto, etFoto.getText().toString());
             contacto = bd.consultaContacto(idContacto);
@@ -305,7 +306,7 @@ public class EditarActivity extends AppCompatActivity implements NavigationView.
             imgFile.delete();
             rellenaCampos();
             rellenaImageView();
-            Toast.makeText(getApplicationContext(),"Foto eliminada", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.fotoEliminada, Toast.LENGTH_LONG).show();
         }
     }
 

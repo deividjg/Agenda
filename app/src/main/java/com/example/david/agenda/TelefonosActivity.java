@@ -38,7 +38,7 @@ public class TelefonosActivity extends AppCompatActivity {
     protected void recibirDatos(){
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            Toast.makeText(getApplicationContext(),"Error en la toma de datos", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.errorTomaDatos, Toast.LENGTH_LONG).show();
         } else {
             idContacto = extras.getLong("idContacto");
         }
@@ -46,19 +46,19 @@ public class TelefonosActivity extends AppCompatActivity {
 
     protected void modificarTel1(View view){
         if(etTelefono1.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"El campo teléfono1 no puede quedar vacío", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.telefonoPrincipalVacio, Toast.LENGTH_LONG).show();
         }else{
             bd.modificarTelefono(idContacto, tel1, etTelefono1.getText().toString());
-            Toast.makeText(getApplicationContext(),"Teléfono modificado", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.telefonoModificado, Toast.LENGTH_LONG).show();
         }
     }
 
     protected void guardarTel2(View view){
         if(etTelefono2.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"El campo está vacío", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.campoVacio, Toast.LENGTH_LONG).show();
         }else{
             bd.añadirTelefono(idContacto, etTelefono2.getText().toString());
-            Toast.makeText(getApplicationContext(),"Teléfono añadido", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.telefonoAñadido, Toast.LENGTH_LONG).show();
             ibGuardar2.setEnabled(false);
             ibBorrar2.setEnabled(true);
         }
@@ -66,7 +66,7 @@ public class TelefonosActivity extends AppCompatActivity {
 
     protected void eliminarTel2(View view){
         bd.eliminarTelefono(idContacto, etTelefono2.getText().toString());
-        Toast.makeText(getApplicationContext(),"Teléfono eliminado", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),R.string.telefonoEliminado, Toast.LENGTH_LONG).show();
         ibBorrar2.setEnabled(false);
         ibGuardar2.setEnabled(true);
         rellenaCampos();
@@ -74,10 +74,10 @@ public class TelefonosActivity extends AppCompatActivity {
 
     protected void guardarTel3(View view){
         if(etTelefono3.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"El campo está vacío", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.campoVacio, Toast.LENGTH_LONG).show();
         }else{
             bd.añadirTelefono(idContacto, etTelefono3.getText().toString());
-            Toast.makeText(getApplicationContext(),"Teléfono añadido", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.telefonoAñadido, Toast.LENGTH_LONG).show();
             ibGuardar3.setEnabled(false);
             ibBorrar3.setEnabled(true);
         }
@@ -85,7 +85,7 @@ public class TelefonosActivity extends AppCompatActivity {
 
     protected void eliminarTel3(View view){
         bd.eliminarTelefono(idContacto, etTelefono3.getText().toString());
-        Toast.makeText(getApplicationContext(),"Teléfono eliminado", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),R.string.telefonoEliminado, Toast.LENGTH_LONG).show();
         ibBorrar3.setEnabled(false);
         ibGuardar3.setEnabled(true);
         rellenaCampos();
