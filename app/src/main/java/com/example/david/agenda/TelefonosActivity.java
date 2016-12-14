@@ -105,12 +105,16 @@ public class TelefonosActivity extends AppCompatActivity {
             etTelefono1.setText(telefonos[0]);
             etTelefono2.setText(telefonos[1]);
             ibBorrar2.setEnabled(true);
+            ibGuardar2.setEnabled(false);
         }
         if(nTelefonos == 3){
             etTelefono1.setText(telefonos[0]);
             etTelefono2.setText(telefonos[1]);
             etTelefono3.setText(telefonos[2]);
+            ibBorrar2.setEnabled(true);
+            ibGuardar2.setEnabled(false);
             ibBorrar3.setEnabled(true);
+            ibGuardar3.setEnabled(false);
         }
     }
 

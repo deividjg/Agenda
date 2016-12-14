@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import static android.os.Environment.DIRECTORY_PICTURES;
-
 public class NuevoActivity extends AppCompatActivity {
 
     BDContactos bd;
@@ -66,11 +64,18 @@ public class NuevoActivity extends AppCompatActivity {
     }
 
     protected void alta(View v){
-        if(iv.getDrawable() == null || fotoTomada == false) {
+        String nombre = etNombre.getText().toString();
+        String telefono = etTelefono.getText().toString();
+        String direccion = etDireccion.getText().toString();
+        String eMail = etEmail.getText().toString();
+        String webBlog = etWebBlog.getText().toString();
 
-        } else {
+        if(nombre.equals("") || telefono.equals("") || fotoTomada == false){
+            Toast.makeText(getApplicationContext(),R.string.camposIncompletos, Toast.LENGTH_LONG).show();
+        }else{
             path = Environment.getExternalStorageDirectory();
             fich_salida= new File(path.getAbsolutePath() + "/Fotos_Contactos", bd.nuevoNombreFoto());
+
             try {
                 os = new FileOutputStream(fich_salida);
             } catch (FileNotFoundException e) {}
@@ -81,17 +86,7 @@ public class NuevoActivity extends AppCompatActivity {
                 os.flush();
                 os.close();
             } catch (IOException e) {}
-        }
 
-        String nombre = etNombre.getText().toString();
-        String telefono = etTelefono.getText().toString();
-        String direccion = etDireccion.getText().toString();
-        String eMail = etEmail.getText().toString();
-        String webBlog = etWebBlog.getText().toString();
-
-        if(nombre.equals("") || telefono.equals("") || fotoTomada == false){
-            Toast.makeText(getApplicationContext(),R.string.camposIncompletos, Toast.LENGTH_LONG).show();
-        }else{
             bd.insertarContacto(idNuevoContacto, nombre, telefono, direccion, eMail, webBlog, bd.nuevoNombreFoto());
             Toast.makeText(getApplicationContext(),R.string.contactoGuardado, Toast.LENGTH_LONG).show();
             volver();

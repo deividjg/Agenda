@@ -24,7 +24,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                app:srcCompat="@android:drawable/sym_def_app_icon"
+                app:srcCompat="@mipmap/cara"
                 android:id="@+id/imageView"
                 android:layout_height="130dp"
                 android:layout_width="130dp" />
